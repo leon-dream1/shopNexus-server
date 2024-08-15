@@ -23,8 +23,28 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    const productsCollection = client.db("shopNexus").collection("products");
+
     app.get("/", (req, res) => {
       res.send("Hello From Shop Nexus!!!!!!!!");
+    });
+
+    app.get("/products", async (req, res) => {
+      console.log(req.query);
+      const searchProductName = req?.query?.search;
+
+      let query = {};
+
+      if (searchProductName) {
+        console.log("Search query is being used");
+        query = {
+          productName: { $regex: searchProductName, $options: "i" },
+        };
+      }
+
+      const result = await productsCollection.find(query).toArray();
+      console.log(result);
+      res.send(result);
     });
 
     console.log(
