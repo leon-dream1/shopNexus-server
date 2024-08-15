@@ -30,9 +30,11 @@ async function run() {
     });
 
     app.get("/products", async (req, res) => {
-      console.log(req.query);
       const searchProductName = req?.query?.search;
-
+      console.log(searchProductName);
+      const page = parseInt(req?.query?.currentPage);
+      const size = parseInt(req?.query?.productPerPage);
+      console.log(page, size);
       let query = {};
 
       if (searchProductName) {
@@ -42,9 +44,18 @@ async function run() {
         };
       }
 
-      const result = await productsCollection.find(query).toArray();
-      console.log(result);
+      const result = await productsCollection
+        .find(query)
+        .skip(page * size)
+        .limit(size)
+        .toArray();
+      console.log("paisi", result);
       res.send(result);
+    });
+
+    app.get("/totalProducts", async (req, res) => {
+      const result = await productsCollection.estimatedDocumentCount();
+      res.send({ count: result });
     });
 
     console.log(
