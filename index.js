@@ -35,7 +35,10 @@ async function run() {
       const page = parseInt(req?.query?.currentPage);
       const size = parseInt(req?.query?.productPerPage);
       const sort = req?.query?.sort;
-      console.log("sort", sort);
+      const brand = req?.query?.selectedBrand;
+      const category = req?.query?.selectedCategory;
+      // console.log("cate", brand, category);
+
       let query = {};
       let sortQuery = {};
 
@@ -49,12 +52,19 @@ async function run() {
       if (sort === "asc") {
         sortQuery = { price: 1 };
       } else if (sort === "desc") {
-        sortQuery = { price: -1 }; 
+        sortQuery = { price: -1 };
       } else if (sort === "newest") {
-        sortQuery = { creationDateTime: -1 }; 
+        sortQuery = { creationDateTime: -1 };
       }
 
-      console.log("query", sortQuery);
+      //filter by brand and category
+      if (brand && brand !== "All") {
+        query.brandName = { $regex: brand, $options: "i" };
+      }
+
+      if (category && category !== "All") {
+        query.category = { $regex: category, $options: "i" };
+      }
 
       const result = await productsCollection
         .find(query)
@@ -62,7 +72,7 @@ async function run() {
         .limit(size)
         .sort(sortQuery)
         .toArray();
-      console.log("paisi", result);
+      console.log("paisi", result.length);
       res.send(result);
     });
 
