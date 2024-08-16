@@ -34,8 +34,10 @@ async function run() {
       console.log(searchProductName);
       const page = parseInt(req?.query?.currentPage);
       const size = parseInt(req?.query?.productPerPage);
-      console.log(page, size);
+      const sort = req?.query?.sort;
+      console.log("sort", sort);
       let query = {};
+      let sortQuery = {};
 
       if (searchProductName) {
         console.log("Search query is being used");
@@ -44,10 +46,21 @@ async function run() {
         };
       }
 
+      if (sort === "asc") {
+        sortQuery = { price: 1 };
+      } else if (sort === "desc") {
+        sortQuery = { price: -1 }; 
+      } else if (sort === "newest") {
+        sortQuery = { creationDateTime: -1 }; 
+      }
+
+      console.log("query", sortQuery);
+
       const result = await productsCollection
         .find(query)
         .skip(page * size)
         .limit(size)
+        .sort(sortQuery)
         .toArray();
       console.log("paisi", result);
       res.send(result);
