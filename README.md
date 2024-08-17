@@ -16,6 +16,7 @@ This is the backend of the project, built using Express.js and MongoDB. It provi
 
    ```bash
    git clone https://github.com/leon-dream1/shopNexus-server.git
+   cd shopNexus-server
 
 2. **Install dependencies:**
    ```bash
