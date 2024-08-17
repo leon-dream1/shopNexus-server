@@ -15,7 +15,7 @@ This is the backend of the project, built using Express.js and MongoDB. It provi
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/leon-dream1/volunteer-network-server.git
+   git clone https://github.com/leon-dream1/shopNexus-server.git
 
 2. **Install dependencies:**
    ```bash
