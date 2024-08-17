@@ -37,9 +37,9 @@ async function run() {
       const sort = req?.query?.sort;
       const brand = req?.query?.selectedBrand;
       const category = req?.query?.selectedCategory;
-      const minPrice = req?.query?.minPrice;
-      const maxPrice = req?.query?.maxPrice;
-      console.log("cate",minPrice, maxPrice);
+      const minPrice = parseInt(req?.query?.minPrice);
+      const maxPrice = parseInt(req?.query?.maxPrice);
+      console.log("price", minPrice, maxPrice); // 401 500
 
       let query = {};
       let sortQuery = {};
@@ -66,6 +66,14 @@ async function run() {
 
       if (category && category !== "All") {
         query.category = { $regex: category, $options: "i" };
+      }
+
+      // if (minPrice !== "null" && maxPrice !== "null") {
+      //   query.price = { $gte: minPrice, $lte: maxPrice };
+      // }
+
+      if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+        query.price = { $gte: minPrice, $lte: maxPrice };
       }
 
       const result = await productsCollection
