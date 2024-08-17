@@ -37,7 +37,9 @@ async function run() {
       const sort = req?.query?.sort;
       const brand = req?.query?.selectedBrand;
       const category = req?.query?.selectedCategory;
-      // console.log("cate", brand, category);
+      const minPrice = req?.query?.minPrice;
+      const maxPrice = req?.query?.maxPrice;
+      console.log("cate",minPrice, maxPrice);
 
       let query = {};
       let sortQuery = {};
